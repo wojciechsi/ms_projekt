@@ -74,3 +74,6 @@ kurtoza_koszty <- moment_centr_4_koszty / (odchylenie_koszty ^ 4)
 #                                                                 "w starszych pracach"
 print(kurtoza_koszty)
 
+  dataKoszty <- data1[['koszty']]
+  print(ks.test(data1, "pnorm"))
+# @todo poziom istotności 0.05
