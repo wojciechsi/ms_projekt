@@ -77,3 +77,29 @@ print(kurtoza_koszty)
   dataKoszty <- data1[['koszty']]
   print(ks.test(data1, "pnorm"))
 # @todo poziom istotności 0.05
+  
+  
+#oszacować przedziałowo wariancje obrotów
+estymator_wariancji_obroty <- var(data1[['obroty']])
+print(estymator_wariancji_obroty)
+
+alpha <- 0.02
+chi_kwadrat1 <- qchisq((1 - (alpha/2)), (nrow(data1) - 1))
+chi_kwadrat2 <- qchisq((alpha/2), (nrow(data1) - 1))
+
+#przedziaŁ:
+left_edge <- (nrow(data1) * estymator_wariancji_obroty) / (chi_kwadrat1)
+right_edge <- (nrow(data1) * estymator_wariancji_obroty) / (chi_kwadrat2)
+
+print(left_edge)
+print(right_edge)
+
+#względna precyzja
+blad_maksymalny <- (right_edge - left_edge) / 2
+print(blad_maksymalny)
+
+wzgledna_precyzja <- blad_maksymalny / estymator_wariancji_obroty * 100
+print(wzgledna_precyzja)
+
+
+#WNIOSEK: to jest niemiarodajne / "nie mamy podstaw do uogólnienia otrzymanego przedziału ufności"
