@@ -77,8 +77,14 @@ print(kurtoza_koszty)
   dataKoszty <- data1[['koszty']]
   print(ks.test(data1, "pnorm"))
 # @todo poziom istotności 0.05
-  
-  
+
+#podajemy odpowiednie kolumny, rozkład hipotetyczny jest normalny, przekazywane estymatory są parametrami spodziewanego rozkładu
+ks.test(data1$koszty, "pnorm", mean=mean(data1$koszty), sd=sd(data1$koszty))
+#wartość p-value jest większa od poziomu istotności (alfa = 0.05), nie ma więc podstaw do odrzucenia hipotezy
+
+ks.test(data1$obroty, "pnorm", mean=mean(data1$obroty), sd=sd(data1$obroty))
+#wartość p-value jest większa od poziomu istotności (alfa = 0.05), nie ma więc podstaw do odrzucenia hipotezy
+
 #oszacować przedziałowo wariancje obrotów
 estymator_wariancji_obroty <- var(data1[['obroty']])
 print(estymator_wariancji_obroty)
