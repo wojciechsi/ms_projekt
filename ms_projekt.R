@@ -103,3 +103,36 @@ print(wzgledna_precyzja)
 
 
 #WNIOSEK: to jest niemiarodajne / "nie mamy podstaw do uogólnienia otrzymanego przedziału ufności"
+
+#zweryfikować hipotezę "branża jest dochodowa"
+#H0: wartość średnia obrotów jest równa wartości średniej kosztów
+#H1: wartość średnia obrotów jest większa od wartości średniej kosztów
+
+#nie wiemy, czy wariancje są równe
+#H0: wariancja_obroty = wariancja_koszty
+#H1: wariancja_obroty > wariancja_koszty
+
+nieobc_estymator_wariancji_koszty <- var(data1[['koszty']]) * nrow(data1) / (nrow(data1)-1)
+nieobc_estymator_wariancji_obroty <- var(data1[['obroty']]) * nrow(data1) / (nrow(data1)-1)
+
+print(nieobc_estymator_wariancji_koszty)
+print(nieobc_estymator_wariancji_obroty)
+
+statystyka_F <- nieobc_estymator_wariancji_obroty / nieobc_estymator_wariancji_koszty
+print(statystyka_F)
+
+alpha <- 0.05
+
+zbior_krytyczny <- qf((1- alpha), (nrow(data1)-1), (nrow(data1)-1))
+print(zbior_krytyczny)
+
+# ponieważ nasza wartośc statystyki testowej jest mniejsza niż lewa krawędź przedziału obszaru krytycznego
+# nie ma podstaw do odrzucenia hipotezy
+
+statystyka_T <- (srednia_obroty - srednia_koszty) / sqrt((nrow(data1)*nieobc_estymator_wariancji_obroty + nrow(data1) * nieobc_estymator_wariancji_koszty)/(nrow(data1) * 2 - 2)*(nrow(data1) * 2) / (nrow(data1)^2))
+print(statystyka_T)
+
+left_edge_T <- qt((1 - alpha), (2 * nrow(data1) - 2))
+print(left_edge_T)
+
+#wartośc statystyki należy do obszru krytycznego, zatem odrzucamy hipotezę zerową i przyjmujemy hipotezę alternatywną, że branża jest dochodowa
