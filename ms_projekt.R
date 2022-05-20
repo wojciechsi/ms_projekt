@@ -142,3 +142,26 @@ left_edge_T <- qt((1 - alpha), (2 * nrow(data1) - 2))
 print(left_edge_T)
 
 #wartośc statystyki należy do obszru krytycznego, zatem odrzucamy hipotezę zerową i przyjmujemy hipotezę alternatywną, że branża jest dochodowa
+
+#========= ZADANIE 3 =========
+
+alpha <- 0.02
+
+#kwantyl rozkładu
+q_norm <- qnorm(1 - (alpha/2), srednia_koszty, odchylenie_koszty)
+print(q_norm)
+
+#przedział
+left_edge_k <- (srednia_koszty - (q_norm * (odchylenie_koszty / nrow(data1))))
+right_edge_k <- (srednia_koszty + (q_norm * (odchylenie_koszty / nrow(data1))))
+print(left_edge_k)
+print(right_edge_k)
+
+#względna precyzja
+blad_maksymalny_k <- (right_edge_k - left_edge_k) / 2
+print(blad_maksymalny_k)
+
+wzgledna_precyzja_k <- (blad_maksymalny_k / srednia_koszty * 100)
+print(wzgledna_precyzja_k)
+
+
