@@ -148,12 +148,12 @@ print(left_edge_T)
 alpha <- 0.02
 
 #kwantyl rozkładu
-q_norm <- qnorm(1 - (alpha/2), srednia_koszty, odchylenie_koszty)
-print(q_norm)
+q_t <- qt(1 - (alpha/2), nrow(data1) - 1)
+print(q_t)
 
 #przedział
-left_edge_k <- (srednia_koszty - (q_norm * (odchylenie_koszty / nrow(data1))))
-right_edge_k <- (srednia_koszty + (q_norm * (odchylenie_koszty / nrow(data1))))
+left_edge_k <- (srednia_koszty - (q_t * (odchylenie_koszty / sqrt(nrow(data1) - 1))))
+right_edge_k <- (srednia_koszty + (q_t * (odchylenie_koszty / sqrt(nrow(data1) - 1))))
 print(left_edge_k)
 print(right_edge_k)
 
@@ -163,5 +163,7 @@ print(blad_maksymalny_k)
 
 wzgledna_precyzja_k <- (blad_maksymalny_k / srednia_koszty * 100)
 print(wzgledna_precyzja_k)
+
+# Mamy podstawy do uogólnienia przedziału ufności
 
 
