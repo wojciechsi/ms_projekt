@@ -6,6 +6,8 @@ print(data1)
 
 srednia_koszty <- mean(data1[['koszty']])
 srednia_obroty <- mean(data1[['obroty']])
+kwantyle_koszty <- quantile(koszty)
+kwantyle_obroty <- quantile(obroty)
 print(srednia_koszty)
 print(srednia_obroty)
 
@@ -16,11 +18,7 @@ moda <- function(x) {
 }
 
 
-dane <- data1[['koszty']]
-dane_w_przedzialach <- cut(dane, breaks = 5) #liczba klas równa jest 5, ponieważ została obliczona ze wzoru k=sqrt(25)
-(szereg<-table(dane_w_przedzialach))
-# @todo STWORZYĆ NOWY DATA SET - WARTOŚCI MAJĄ BYĆ ŚREDNIĄ KAŻDEGO Z PRZEDZIAŁÓW - TO BĘDZIE MODĄ, TEN PODZIAŁ WYKORZYSTAMY
-# DO PLOTOWANIA HISTOGRAMU
+
 
 moda_koszty <- moda(data1[['koszty']])
 
@@ -79,13 +77,22 @@ print(kurtoza_koszty)
 # @todo poziom istotności 0.05
 
   
-  
+#### KOSZTY
 koszty <- data1$koszty
-bins_koszty <- seq(min(koszty), max(koszty), by=(max(koszty)-min(koszty))/5)
-szereg <- table(cut(koszty,5))
+bins_koszty <- seq(min(koszty), max(koszty), by=(max(koszty)-min(koszty))/6)
+szereg_koszty <- table(cut(koszty,6))
 
-histogram_koszty1=hist(koszty,breaks=bins_koszty, main="Histogram: koszty", xlab="Koszty ", col="red")
-histogram_koszty2=hist(koszty)
+hist(koszty,breaks=bins_koszty, main="Histogram: koszty", xlab="Koszty ", col="red")
+hist(koszty)
+
+
+### OBROTY
+obroty <- data1$obroty
+bins_obroty <- seq(min(obroty), max(obroty), by=(max(obroty)-min(obroty))/5)
+szereg_obroty <- table(cut(obroty, 5))
+
+hist(obroty,breaks=bins_obroty, main="Histogram: obroty", xlab="Obroty ", col="red")
+hist(obroty)
 #podajemy odpowiednie kolumny, rozkład hipotetyczny jest normalny, przekazywane estymatory są parametrami spodziewanego rozkładu
 ks.test(data1$koszty, "pnorm", mean=mean(data1$koszty), sd=sd(data1$koszty))
 #wartość p-value jest większa od poziomu istotności (alfa = 0.05), nie ma więc podstaw do odrzucenia hipotezy
