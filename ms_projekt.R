@@ -78,6 +78,14 @@ print(kurtoza_koszty)
   print(ks.test(data1, "pnorm"))
 # @todo poziom istotności 0.05
 
+  
+  
+koszty <- data1$koszty
+bins_koszty <- seq(min(koszty), max(koszty), by=(max(koszty)-min(koszty))/5)
+szereg <- table(cut(koszty,5))
+
+histogram_koszty1=hist(koszty,breaks=bins_koszty, main="Histogram: koszty", xlab="Koszty ", col="red")
+histogram_koszty2=hist(koszty)
 #podajemy odpowiednie kolumny, rozkład hipotetyczny jest normalny, przekazywane estymatory są parametrami spodziewanego rozkładu
 ks.test(data1$koszty, "pnorm", mean=mean(data1$koszty), sd=sd(data1$koszty))
 #wartość p-value jest większa od poziomu istotności (alfa = 0.05), nie ma więc podstaw do odrzucenia hipotezy
@@ -165,5 +173,5 @@ wzgledna_precyzja_k <- (blad_maksymalny_k / srednia_koszty * 100)
 print(wzgledna_precyzja_k)
 
 # Mamy podstawy do uogólnienia przedziału ufności
-
+####
 
