@@ -72,12 +72,8 @@ kurtoza_koszty <- moment_centr_4_koszty / (odchylenie_koszty ^ 4)
 #                                                                 "w starszych pracach"
 print(kurtoza_koszty)
 
-  dataKoszty <- data1[['koszty']]
-  print(ks.test(data1, "pnorm"))
-# @todo poziom istotności 0.05
 
-  
-#### KOSZTY
+#### KOSZTY HISTOGRAM
 koszty <- data1$koszty
 bins_koszty <- seq(min(koszty), max(koszty), by=(max(koszty)-min(koszty))/6)
 szereg_koszty <- table(cut(koszty,6))
@@ -86,7 +82,7 @@ hist(koszty,breaks=bins_koszty, main="Histogram: koszty", xlab="Koszty ", col="r
 hist(koszty)
 
 
-### OBROTY
+### OBROTY HISTOGRAM
 obroty <- data1$obroty
 bins_obroty <- seq(min(obroty), max(obroty), by=(max(obroty)-min(obroty))/5)
 szereg_obroty <- table(cut(obroty, 5))
