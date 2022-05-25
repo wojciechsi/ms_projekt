@@ -74,13 +74,19 @@ print(rozstep_cwiartkowy_obroty)
 #MIARY ASYMETRII
 # @todo jakiśtam sizeof zamiast 25
 # @todo funkcja 
-moment_centr_tmp <- 0
-for (xi in 1:(nrow(data1))) {
-  moment_centr_tmp <- moment_centr_tmp + (data1[xi, "koszty"] - mean(data1[['koszty']]))^3
+wspolczynnik_asymetrii <- function(tmp_data, tmp_row_name, tmp_odchylenie) {
+  moment_centr_tmp <- 0
+  for (xi in 1:(nrow(tmp_data))) {
+    moment_centr_tmp <- moment_centr_tmp + (tmp_data[xi, tmp_row_name] - mean(tmp_data[[tmp_row_name]]))^3
+  }
+  moment_centr <- 1/24 * moment_centr_tmp
+  wspolczynnik_asymetrii <- (moment_centr) / (tmp_odchylenie ^ 3)
+  return(wspolczynnik_asymetrii)
 }
-moment_centr_koszty <- 1/24 * moment_centr_tmp
 
-wspolczynnik_asymetrii_koszty <- (moment_centr_koszty) / (odchylenie_koszty ^ 3)
+
+wspolczynnik_asymetrii_koszty <- wspolczynnik_asymetrii(data1, 'koszty', odchylenie_koszty)
+
 print(wspolczynnik_asymetrii_koszty)
 
 moment_centr_4_tmp <- 0
