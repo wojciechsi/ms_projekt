@@ -1,6 +1,7 @@
 data1 <- read.csv(file = 'MS_projekt.csv', sep = ';')
-
 print(data1)
+
+#========= ZADANIE 2 =========
 
 #MIARY POŁOŻENIA
 
@@ -8,68 +9,36 @@ srednia_koszty <- mean(data1[['koszty']])
 srednia_obroty <- mean(data1[['obroty']])
 kwantyle_koszty <- quantile(koszty)
 kwantyle_obroty <- quantile(obroty)
-print(srednia_koszty)
-print(srednia_obroty)
-
 
 moda <- function(x) {
   ux <- unique(x)
   ux[which.max(tabulate(match(x, ux)))]
 }
 
-
-
-
 moda_koszty <- moda(data1[['koszty']])
 moda_obroty <- moda(data1[['obroty']])
 
-print(moda_koszty)
-print(moda_obroty)
-
 mediana_koszty <- median(data1[['koszty']])
-print(mediana_koszty)
-
 mediana_obroty <- median(data1[['obroty']])
-print(mediana_obroty)
 
-
-# MIARY ZRÓŻNICOWANIA
+#MIARY ZRÓŻNICOWANIA
 odchylenie_koszty <- sd(data1[['koszty']])
-print(odchylenie_koszty)
-
 odchylenie_obroty <- sd(data1[['obroty']])
-print(odchylenie_obroty)
 
 wariancja_koszty <- var(data1[['koszty']])
-print(wariancja_koszty)
-
 wariancja_obroty <- var(data1[['obroty']])
-print(wariancja_obroty)
-
 
 srednie_odch_bezwzg_koszty <- mad(data1[['koszty']])
-print(srednie_odch_bezwzg_koszty)
-
 srednie_odch_bezwzg_obroty <- mad(data1[['obroty']])
-print(srednie_odch_bezwzg_obroty)
 
 wsp_zmiennosci_koszty <- sd(data1[['koszty']]) / mean(data1[['koszty']]) * 100
-print(wsp_zmiennosci_koszty)
-
 wsp_zmiennosci_obroty <- sd(data1[['obroty']]) / mean(data1[['obroty']]) * 100
-print(wsp_zmiennosci_obroty)
 
 rozstep_koszty <- IQR(data1[['koszty']])
-print(rozstep_koszty)
-
 rozstep_obroty <- IQR(data1[['obroty']])
-print(rozstep_obroty)
 
 rozstep_cwiartkowy_koszty <- IQR(data1[['koszty']]) / 2
-print(rozstep_cwiartkowy_koszty)
-
 rozstep_cwiartkowy_obroty <- IQR(data1[['obroty']]) / 2
-print(rozstep_cwiartkowy_obroty)
 
 #MIARY ASYMETRII
 wspolczynnik_asymetrii <- function(tmp_data, tmp_row_name, tmp_odchylenie) {
@@ -82,15 +51,8 @@ wspolczynnik_asymetrii <- function(tmp_data, tmp_row_name, tmp_odchylenie) {
   return(wspolczynnik_asymetrii)
 }
 
-
 wspolczynnik_asymetrii_koszty <- wspolczynnik_asymetrii(data1, 'koszty', odchylenie_koszty)
-
-print(wspolczynnik_asymetrii_koszty)
-
 wspolczynnik_asymetrii_obroty <- wspolczynnik_asymetrii(data1, 'obroty', odchylenie_obroty)
-
-print(wspolczynnik_asymetrii_obroty)
-
 
 kurtoza <-function(tmp_data, tmp_row_name, tmp_odchylenie) {
   moment_centr_4_tmp <- 0
@@ -99,37 +61,25 @@ kurtoza <-function(tmp_data, tmp_row_name, tmp_odchylenie) {
   }
   moment_centr_4 <- 1/(nrow(tmp_data)-1) * moment_centr_4_tmp
   tmp_kurtoza <- moment_centr_4 / (tmp_odchylenie ^ 4)
-  # - 3
-  # "w starszych pracach"
 }
 
-
 kurtoza_koszty <- kurtoza(data1, 'koszty', odchylenie_koszty)
-
-print(kurtoza_koszty)
-
-
 kurtoza_obroty <- kurtoza(data1, 'obroty', odchylenie_obroty)
 
-print(kurtoza_obroty)
-
-
-#### KOSZTY HISTOGRAM
+#KOSZTY HISTOGRAM
 koszty <- data1$koszty
 bins_koszty <- seq(min(koszty), max(koszty), by=(max(koszty)-min(koszty))/6)
 szereg_koszty <- table(cut(koszty,6))
-
 hist(koszty,breaks=bins_koszty, main="Histogram: koszty", xlab="Koszty ", col="red")
-hist(koszty)
 
-
-### OBROTY HISTOGRAM
+#OBROTY HISTOGRAM
 obroty <- data1$obroty
 bins_obroty <- seq(min(obroty), max(obroty), by=(max(obroty)-min(obroty))/5)
 szereg_obroty <- table(cut(obroty, 5))
-
 hist(obroty,breaks=bins_obroty, main="Histogram: obroty", xlab="Obroty ", col="red")
-hist(obroty)
+
+#========= ZADANIE 2 =========
+
 #podajemy odpowiednie kolumny, rozkład hipotetyczny jest normalny, przekazywane estymatory są parametrami spodziewanego rozkładu
 ks.test(data1$koszty, "pnorm", mean=mean(data1$koszty), sd=sd(data1$koszty))
 #wartość p-value jest większa od poziomu istotności (alfa = 0.05), nie ma więc podstaw do odrzucenia hipotezy
@@ -139,7 +89,6 @@ ks.test(data1$obroty, "pnorm", mean=mean(data1$obroty), sd=sd(data1$obroty))
 
 #oszacować przedziałowo wariancje obrotów
 estymator_wariancji_obroty <- var(data1[['obroty']])
-print(estymator_wariancji_obroty)
 
 alpha <- 0.02
 chi_kwadrat1 <- qchisq((1 - (alpha/2)), (nrow(data1) - 1))
@@ -149,16 +98,10 @@ chi_kwadrat2 <- qchisq((alpha/2), (nrow(data1) - 1))
 left_edge <- (nrow(data1) * estymator_wariancji_obroty) / (chi_kwadrat1)
 right_edge <- (nrow(data1) * estymator_wariancji_obroty) / (chi_kwadrat2)
 
-print(left_edge)
-print(right_edge)
-
 #względna precyzja
 blad_maksymalny <- (right_edge - left_edge) / 2
-print(blad_maksymalny)
 
 wzgledna_precyzja <- blad_maksymalny / estymator_wariancji_obroty * 100
-print(wzgledna_precyzja)
-
 
 #WNIOSEK: to jest niemiarodajne / "nie mamy podstaw do uogólnienia otrzymanego przedziału ufności"
 
@@ -173,25 +116,18 @@ print(wzgledna_precyzja)
 nieobc_estymator_wariancji_koszty <- var(data1[['koszty']]) * nrow(data1) / (nrow(data1)-1)
 nieobc_estymator_wariancji_obroty <- var(data1[['obroty']]) * nrow(data1) / (nrow(data1)-1)
 
-print(nieobc_estymator_wariancji_koszty)
-print(nieobc_estymator_wariancji_obroty)
-
 statystyka_F <- nieobc_estymator_wariancji_obroty / nieobc_estymator_wariancji_koszty
 print(statystyka_F)
 
 alpha <- 0.05
 
 zbior_krytyczny <- qf((1- alpha), (nrow(data1)-1), (nrow(data1)-1))
-print(zbior_krytyczny)
 
 # ponieważ nasza wartośc statystyki testowej jest mniejsza niż lewa krawędź przedziału obszaru krytycznego
 # nie ma podstaw do odrzucenia hipotezy
 
 statystyka_T <- (srednia_obroty - srednia_koszty) / sqrt((nrow(data1)*nieobc_estymator_wariancji_obroty + nrow(data1) * nieobc_estymator_wariancji_koszty)/(nrow(data1) * 2 - 2)*(nrow(data1) * 2) / (nrow(data1)^2))
-print(statystyka_T)
-
 left_edge_T <- qt((1 - alpha), (2 * nrow(data1) - 2))
-print(left_edge_T)
 
 #wartośc statystyki należy do obszru krytycznego, zatem odrzucamy hipotezę zerową i przyjmujemy hipotezę alternatywną, że branża jest dochodowa
 
@@ -201,21 +137,16 @@ alpha <- 0.02
 
 #kwantyl rozkładu
 q_t <- qt(1 - (alpha/2), nrow(data1) - 1)
-print(q_t)
 
 #przedział
 left_edge_k <- (srednia_koszty - (q_t * (odchylenie_koszty / sqrt(nrow(data1) - 1))))
 right_edge_k <- (srednia_koszty + (q_t * (odchylenie_koszty / sqrt(nrow(data1) - 1))))
-print(left_edge_k)
-print(right_edge_k)
 
 #względna precyzja
 blad_maksymalny_k <- (right_edge_k - left_edge_k) / 2
-print(blad_maksymalny_k)
 
 wzgledna_precyzja_k <- (blad_maksymalny_k / srednia_koszty * 100)
-print(wzgledna_precyzja_k)
 
 # Mamy podstawy do uogólnienia przedziału ufności
-####
+
 
