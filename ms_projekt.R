@@ -92,17 +92,26 @@ wspolczynnik_asymetrii_obroty <- wspolczynnik_asymetrii(data1, 'obroty', odchyle
 print(wspolczynnik_asymetrii_obroty)
 
 
-moment_centr_4_tmp <- 0
-for (xi in 1:nrow(data1)) {
-  moment_centr_4_tmp <- moment_centr_4_tmp + (data1[xi, "koszty"] - mean(data1[['koszty']]))^4
+kurtoza <-function(tmp_data, tmp_row_name, tmp_odchylenie) {
+  moment_centr_4_tmp <- 0
+  for (xi in 1:nrow(tmp_data)) {
+    moment_centr_4_tmp <- moment_centr_4_tmp + (tmp_data[xi, tmp_row_name] - mean(tmp_data[[tmp_row_name]]))^4
+  }
+  moment_centr_4 <- 1/(nrow(tmp_data)-1) * moment_centr_4_tmp
+  tmp_kurtoza <- moment_centr_4 / (tmp_odchylenie ^ 4)
+  # - 3
+  # "w starszych pracach"
 }
 
-moment_centr_4_koszty <- 1/24 * moment_centr_4_tmp
 
-kurtoza_koszty <- moment_centr_4_koszty / (odchylenie_koszty ^ 4)
-#                                                                 - 3
-#                                                                 "w starszych pracach"
+kurtoza_koszty <- kurtoza(data1, 'koszty', odchylenie_koszty)
+
 print(kurtoza_koszty)
+
+
+kurtoza_obroty <- kurtoza(data1, 'obroty', odchylenie_obroty)
+
+print(kurtoza_obroty)
 
 
 #### KOSZTY HISTOGRAM
