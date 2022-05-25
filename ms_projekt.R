@@ -72,14 +72,12 @@ rozstep_cwiartkowy_obroty <- IQR(data1[['obroty']]) / 2
 print(rozstep_cwiartkowy_obroty)
 
 #MIARY ASYMETRII
-# @todo jakiśtam sizeof zamiast 25
-# @todo funkcja 
 wspolczynnik_asymetrii <- function(tmp_data, tmp_row_name, tmp_odchylenie) {
   moment_centr_tmp <- 0
   for (xi in 1:(nrow(tmp_data))) {
     moment_centr_tmp <- moment_centr_tmp + (tmp_data[xi, tmp_row_name] - mean(tmp_data[[tmp_row_name]]))^3
   }
-  moment_centr <- 1/24 * moment_centr_tmp
+  moment_centr <- 1/(nrow(tmp_data)-1) * moment_centr_tmp
   wspolczynnik_asymetrii <- (moment_centr) / (tmp_odchylenie ^ 3)
   return(wspolczynnik_asymetrii)
 }
@@ -88,6 +86,11 @@ wspolczynnik_asymetrii <- function(tmp_data, tmp_row_name, tmp_odchylenie) {
 wspolczynnik_asymetrii_koszty <- wspolczynnik_asymetrii(data1, 'koszty', odchylenie_koszty)
 
 print(wspolczynnik_asymetrii_koszty)
+
+wspolczynnik_asymetrii_obroty <- wspolczynnik_asymetrii(data1, 'obroty', odchylenie_obroty)
+
+print(wspolczynnik_asymetrii_obroty)
+
 
 moment_centr_4_tmp <- 0
 for (xi in 1:nrow(data1)) {
