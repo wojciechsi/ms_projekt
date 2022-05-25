@@ -21,32 +21,55 @@ moda <- function(x) {
 
 
 moda_koszty <- moda(data1[['koszty']])
+moda_obroty <- moda(data1[['obroty']])
 
 print(moda_koszty)
+print(moda_obroty)
 
 mediana_koszty <- median(data1[['koszty']])
 print(mediana_koszty)
 
+mediana_obroty <- median(data1[['obroty']])
+print(mediana_obroty)
 
 
 # MIARY ZRÓŻNICOWANIA
 odchylenie_koszty <- sd(data1[['koszty']])
 print(odchylenie_koszty)
 
+odchylenie_obroty <- sd(data1[['obroty']])
+print(odchylenie_obroty)
+
 wariancja_koszty <- var(data1[['koszty']])
 print(wariancja_koszty)
+
+wariancja_obroty <- var(data1[['obroty']])
+print(wariancja_obroty)
+
 
 srednie_odch_bezwzg_koszty <- mad(data1[['koszty']])
 print(srednie_odch_bezwzg_koszty)
 
+srednie_odch_bezwzg_obroty <- mad(data1[['obroty']])
+print(srednie_odch_bezwzg_obroty)
+
 wsp_zmiennosci_koszty <- sd(data1[['koszty']]) / mean(data1[['koszty']]) * 100
 print(wsp_zmiennosci_koszty)
+
+wsp_zmiennosci_obroty <- sd(data1[['obroty']]) / mean(data1[['obroty']]) * 100
+print(wsp_zmiennosci_obroty)
 
 rozstep_koszty <- IQR(data1[['koszty']])
 print(rozstep_koszty)
 
+rozstep_obroty <- IQR(data1[['obroty']])
+print(rozstep_obroty)
+
 rozstep_cwiartkowy_koszty <- IQR(data1[['koszty']]) / 2
 print(rozstep_cwiartkowy_koszty)
+
+rozstep_cwiartkowy_obroty <- IQR(data1[['obroty']]) / 2
+print(rozstep_cwiartkowy_obroty)
 
 #MIARY ASYMETRII
 # @todo jakiśtam sizeof zamiast 25
