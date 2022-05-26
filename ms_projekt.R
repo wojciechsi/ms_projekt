@@ -117,6 +117,7 @@ ks.test(data1$obroty,
         sd = sd(data1$obroty))
 #wartość p-value jest większa od poziomu istotności (alfa = 0.05), nie ma więc podstaw do odrzucenia hipotezy
 
+#=================ZADANIE 4===============================
 #oszacować przedziałowo wariancje obrotów
 estymator_wariancji_obroty <- var(data1[['obroty']])
 
@@ -192,5 +193,4 @@ statystyka_T <- (srednia_obroty - srednia_koszty) / sqrt((
 ) / (nrow(data1) * 2 - 2) * (nrow(data1) * 2) / (nrow(data1) ^ 2)
 )
 left_edge_T <- qt((1 - alpha), (2 * nrow(data1) - 2))
-
 #wartośc statystyki należy do obszru krytycznego, zatem odrzucamy hipotezę zerową i przyjmujemy hipotezę alternatywną, że branża jest dochodowa
