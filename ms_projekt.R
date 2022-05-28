@@ -1,7 +1,13 @@
-#WCZYTANIE DANYCH
-data1 <- read.csv(file = 'MS_projekt.csv', sep = ';')
+##############################
+#######WCZYTANIE DANYCH#######
+##############################
 
+data1 <- read.csv(file = 'MS_projekt.csv', sep = ';')
+koszty <- data1$koszty
+obroty <- data1$obroty
+##############################
 #========= ZADANIE 1 =========
+##############################
 
 #MIARY POŁOŻENIA
 
@@ -86,9 +92,11 @@ hist(
   main = "Histogram kosztow",
   xlab = "koszty",
   ylab = "czestosc",
-  col = "red"
+  col = "red",
+  axes = F
 )
-
+axis(2)
+axis(1, at = seq(min(koszty), max(koszty), by=(max(koszty) - min(koszty)) / 5), labels = seq(min(koszty), max(koszty), by = (max(koszty) - min(koszty)) / 5))
 #OBROTY HISTOGRAM
 obroty <- data1$obroty
 bins_obroty <-
@@ -100,9 +108,15 @@ hist(
   main = "Histogram obrotow",
   xlab = "obroty",
   ylab = "czestosc",
-  col = "red"
+  col = "red",
+  axes = F
 )
+axis(2)
+axis(1, at = seq(min(obroty), max(obroty), by=(max(obroty) - min(obroty)) / 5), labels = seq(min(obroty), max(obroty), by = (max(obroty) - min(obroty)) / 5))
+
+##############################
 #========= ZADANIE 2 =========
+##############################
 
 #podajemy odpowiednie kolumny, rozkład hipotetyczny jest normalny, przekazywane estymatory są parametrami spodziewanego rozkładu
 ks.test(data1$koszty,
@@ -117,30 +131,10 @@ ks.test(data1$obroty,
         sd = sd(data1$obroty))
 #wartość p-value jest większa od poziomu istotności (alfa = 0.05), nie ma więc podstaw do odrzucenia hipotezy
 
-#=================ZADANIE 4===============================
-#oszacować przedziałowo wariancje obrotów
-estymator_wariancji_obroty <- var(data1[['obroty']])
 
-alpha <- 0.02
-chi_kwadrat1 <- qchisq((1 - (alpha / 2)), (nrow(data1) - 1))
-chi_kwadrat2 <- qchisq((alpha / 2), (nrow(data1) - 1))
-
-#przedziaŁ:
-left_edge <-
-  (nrow(data1) * estymator_wariancji_obroty) / (chi_kwadrat1)
-right_edge <-
-  (nrow(data1) * estymator_wariancji_obroty) / (chi_kwadrat2)
-
-#względna precyzja
-blad_maksymalny <- (right_edge - left_edge) / 2
-
-wzgledna_precyzja <-
-  blad_maksymalny / estymator_wariancji_obroty * 100
-
-#WNIOSEK: to jest niemiarodajne / "nie mamy podstaw do uogólnienia otrzymanego przedziału ufności"
-
+##############################
 #========= ZADANIE 3 =========
-
+##############################
 alpha <- 0.02
 
 #kwantyl rozkładu
@@ -162,8 +156,33 @@ blad_maksymalny_k <- (right_edge_k - left_edge_k) / 2
 wzgledna_precyzja_k <- (blad_maksymalny_k / srednia_koszty * 100)
 
 # Mamy podstawy do uogólnienia przedziału ufności
+##############################
+#=======ZADANIE 4=============
+##############################
 
-#========= ZADANIE 4 =========
+#oszacować przedziałowo wariancje obrotów
+estymator_wariancji_obroty <- var(data1[['obroty']])
+
+alpha <- 0.02
+chi_kwadrat1 <- qchisq((1 - (alpha / 2)), (nrow(data1) - 1))
+chi_kwadrat2 <- qchisq((alpha / 2), (nrow(data1) - 1))
+
+#przedziaŁ:
+left_edge <-
+  (nrow(data1) * estymator_wariancji_obroty) / (chi_kwadrat1)
+right_edge <-
+  (nrow(data1) * estymator_wariancji_obroty) / (chi_kwadrat2)
+
+#względna precyzja
+blad_maksymalny <- (right_edge - left_edge) / 2
+
+wzgledna_precyzja <-
+  blad_maksymalny / estymator_wariancji_obroty * 100
+
+#WNIOSEK: to jest niemiarodajne / "nie mamy podstaw do uogólnienia otrzymanego przedziału ufności"
+##############################
+#========= ZADANIE 5 =========
+##############################
 
 #H0: wartość średnia obrotów jest równa wartości średniej kosztów
 #H1: wartość średnia obrotów jest większa od wartości średniej kosztów
