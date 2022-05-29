@@ -80,39 +80,48 @@ kurtoza <- function(tmp_data, tmp_row_name, tmp_odchylenie) {
 
 kurtoza_koszty <- kurtoza(data1, 'koszty', odchylenie_koszty)
 kurtoza_obroty <- kurtoza(data1, 'obroty', odchylenie_obroty)
-
+print(paste("Kurtoza obrotów: ", kurtoza_obroty))
+print(paste("Skośność obrotów: ",wspolczynnik_asymetrii_obroty))
+print(paste("Kurtoza kosztów: ", kurtoza_koszty))
+print(paste("Skośność kosztów: ",wspolczynnik_asymetrii_koszty))
 #KOSZTY HISTOGRAM
 koszty <- data1$koszty
+liczba_przedzialow_koszty <- sqrt(nrow(data1))
+szerokosc_przedzialu_koszty <- (max(koszty) - min(koszty)) / liczba_przedzialow_koszty
 bins_koszty <-
-  seq(min(koszty), max(koszty), by = (max(koszty) - min(koszty)) / 5)
+  seq(min(koszty), max(koszty), by = szerokosc_przedzialu_koszty)
 szereg_koszty <- table(cut(koszty, 5))
+print(transform(szereg_koszty)) #print szereg
 hist(
   koszty,
   breaks = bins_koszty,
-  main = "Histogram kosztow",
-  xlab = "koszty",
-  ylab = "czestosc",
-  col = "red",
+  main = "Koszty",
+  xlab = "Koszty prowadzenia działaności w tys. zł",
+  ylab = "Częstość występowania",
+  col = "orange",
   axes = F
 )
 axis(2)
-axis(1, at = seq(min(koszty), max(koszty), by=(max(koszty) - min(koszty)) / 5), labels = seq(min(koszty), max(koszty), by = (max(koszty) - min(koszty)) / 5))
+axis(1, at = seq(min(koszty), max(koszty), by=szerokosc_przedzialu_koszty), labels = seq(min(koszty), max(koszty), by = szerokosc_przedzialu_koszty))
+
 #OBROTY HISTOGRAM
 obroty <- data1$obroty
+liczba_przedzialow_obroty <- sqrt(nrow(data1))
+szerokosc_przedzialu_obroty <- (max(obroty) - min(obroty)) / liczba_przedzialow_obroty
 bins_obroty <-
-  seq(min(obroty), max(obroty), by = (max(obroty) - min(obroty)) / 5)
+  seq(min(obroty), max(obroty), by = szerokosc_przedzialu_obroty)
 szereg_obroty <- table(cut(obroty, 5))
 hist(
   obroty,
   breaks = bins_obroty,
-  main = "Histogram obrotow",
-  xlab = "obroty",
-  ylab = "czestosc",
+  main = "Obroty",
+  xlab = "Kwota rocznych obrotów w tys. zł",
+  ylab = "Częstość występowania",
   col = "red",
   axes = F
 )
 axis(2)
-axis(1, at = seq(min(obroty), max(obroty), by=(max(obroty) - min(obroty)) / 5), labels = seq(min(obroty), max(obroty), by = (max(obroty) - min(obroty)) / 5))
+axis(1, at = seq(min(obroty), max(obroty), by=szerokosc_przedzialu_obroty) , labels = seq(min(obroty), max(obroty), by = szerokosc_przedzialu_obroty))
 
 ##############################
 #========= ZADANIE 2 =========
