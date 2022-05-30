@@ -11,8 +11,8 @@ obroty <- data1$obroty
 
 #MIARY POŁOŻENIA
 
-srednia_koszty <- mean(data1[['koszty']])
-srednia_obroty <- mean(data1[['obroty']])
+srednia_koszty <- mean(koszty)
+srednia_obroty <- mean(obroty)
 kwantyle_koszty <- quantile(koszty)
 kwantyle_obroty <- quantile(obroty)
 
@@ -21,32 +21,32 @@ moda <- function(x) {
   ux[which.max(tabulate(match(x, ux)))]
 }
 
-moda_koszty <- moda(data1[['koszty']])
-moda_obroty <- moda(data1[['obroty']])
+moda_koszty <- moda(koszty)
+moda_obroty <- moda(obroty)
 
-mediana_koszty <- median(data1[['koszty']])
-mediana_obroty <- median(data1[['obroty']])
+mediana_koszty <- median(koszty)
+mediana_obroty <- median(obroty)
 
 #MIARY ZRÓŻNICOWANIA
-odchylenie_koszty <- sd(data1[['koszty']])
-odchylenie_obroty <- sd(data1[['obroty']])
+odchylenie_koszty <- sd(koszty)
+odchylenie_obroty <- sd(obroty)
 
-wariancja_koszty <- var(data1[['koszty']])
-wariancja_obroty <- var(data1[['obroty']])
+wariancja_koszty <- var(koszty)
+wariancja_obroty <- var(obroty)
 
-srednie_odch_bezwzg_koszty <- mad(data1[['koszty']])
-srednie_odch_bezwzg_obroty <- mad(data1[['obroty']])
+srednie_odch_bezwzg_koszty <- mad(koszty)
+srednie_odch_bezwzg_obroty <- mad(obroty)
 
 wsp_zmiennosci_koszty <-
-  sd(data1[['koszty']]) / mean(data1[['koszty']]) * 100
+  sd(koszty) / mean(koszty) * 100
 wsp_zmiennosci_obroty <-
-  sd(data1[['obroty']]) / mean(data1[['obroty']]) * 100
+  sd(obroty) / mean(obroty) * 100
 
-rozstep_koszty <- IQR(data1[['koszty']])
-rozstep_obroty <- IQR(data1[['obroty']])
+rozstep_koszty <- IQR(koszty)
+rozstep_obroty <- IQR(obroty)
 
-rozstep_cwiartkowy_koszty <- IQR(data1[['koszty']]) / 2
-rozstep_cwiartkowy_obroty <- IQR(data1[['obroty']]) / 2
+rozstep_cwiartkowy_koszty <- IQR(koszty) / 2
+rozstep_cwiartkowy_obroty <- IQR(obroty) / 2
 
 #MIARY ASYMETRII
 wspolczynnik_asymetrii <-
@@ -85,7 +85,7 @@ print(paste("Skośność obrotów: ",wspolczynnik_asymetrii_obroty))
 print(paste("Kurtoza kosztów: ", kurtoza_koszty))
 print(paste("Skośność kosztów: ",wspolczynnik_asymetrii_koszty))
 #KOSZTY HISTOGRAM
-koszty <- data1$koszty
+
 liczba_przedzialow_koszty <- sqrt(nrow(data1))
 szerokosc_przedzialu_koszty <- (max(koszty) - min(koszty)) / liczba_przedzialow_koszty
 bins_koszty <-
@@ -105,7 +105,7 @@ axis(2)
 axis(1, at = seq(min(koszty), max(koszty), by=szerokosc_przedzialu_koszty), labels = seq(min(koszty), max(koszty), by = szerokosc_przedzialu_koszty))
 
 #OBROTY HISTOGRAM
-obroty <- data1$obroty
+
 liczba_przedzialow_obroty <- sqrt(nrow(data1))
 szerokosc_przedzialu_obroty <- (max(obroty) - min(obroty)) / liczba_przedzialow_obroty
 bins_obroty <-
@@ -128,16 +128,16 @@ axis(1, at = seq(min(obroty), max(obroty), by=szerokosc_przedzialu_obroty) , lab
 ##############################
 
 #podajemy odpowiednie kolumny, rozkład hipotetyczny jest normalny, przekazywane estymatory są parametrami spodziewanego rozkładu
-ks.test(data1$koszty,
+ks.test(koszty,
         "pnorm",
-        mean = mean(data1$koszty),
-        sd = sd(data1$koszty))
+        mean = mean(koszty),
+        sd = sd(koszty))
 #wartość p-value jest większa od poziomu istotności (alfa = 0.05), nie ma więc podstaw do odrzucenia hipotezy
 
-ks.test(data1$obroty,
+ks.test(obroty,
         "pnorm",
-        mean = mean(data1$obroty),
-        sd = sd(data1$obroty))
+        mean = mean(obroty),
+        sd = sd(obroty))
 #wartość p-value jest większa od poziomu istotności (alfa = 0.05), nie ma więc podstaw do odrzucenia hipotezy
 
 
@@ -170,7 +170,7 @@ wzgledna_precyzja_k <- (blad_maksymalny_k / srednia_koszty * 100)
 ##############################
 
 #oszacować przedziałowo wariancje obrotów
-estymator_wariancji_obroty <- var(data1[['obroty']])
+estymator_wariancji_obroty <- var(obroty)
 
 alpha <- 0.02
 chi_kwadrat1 <- qchisq((1 - (alpha / 2)), (nrow(data1) - 1))
@@ -201,9 +201,9 @@ wzgledna_precyzja <-
 #H1: wariancja_obroty > wariancja_koszty
 
 nieobc_estymator_wariancji_koszty <-
-  var(data1[['koszty']]) * nrow(data1) / (nrow(data1) - 1)
+  var(koszty) * nrow(data1) / (nrow(data1) - 1)
 nieobc_estymator_wariancji_obroty <-
-  var(data1[['obroty']]) * nrow(data1) / (nrow(data1) - 1)
+  var(obroty) * nrow(data1) / (nrow(data1) - 1)
 
 statystyka_F <-
   nieobc_estymator_wariancji_obroty / nieobc_estymator_wariancji_koszty
@@ -211,8 +211,13 @@ print(statystyka_F)
 
 alpha <- 0.05
 
-zbior_krytyczny <- qf((1 - alpha), (nrow(data1) - 1), (nrow(data1) - 1))
-
+zbior_krytyczny_left_edge <- qf((1 - alpha), (nrow(data1) - 1), (nrow(data1) - 1))
+print("Test równości dwóch wariancji: ")
+if(statystyka_F < zbior_krytyczny_left_edge){
+  print("Brak podstaw do odrzucenia hipotezy zerowej.")
+}else{
+  print("Odrzucamy hipotezę zerową, przyjmujemy hipotezę alternatywną - wariancje kosztów i obrotów są różne.")
+}
 # ponieważ nasza wartośc statystyki testowej jest mniejsza niż lewa krawędź przedziału obszaru krytycznego
 # nie ma podstaw do odrzucenia hipotezy
 
@@ -221,4 +226,8 @@ statystyka_T <- (srednia_obroty - srednia_koszty) / sqrt((
 ) / (nrow(data1) * 2 - 2) * (nrow(data1) * 2) / (nrow(data1) ^ 2)
 )
 left_edge_T <- qt((1 - alpha), (2 * nrow(data1) - 2))
-#wartośc statystyki należy do obszru krytycznego, zatem odrzucamy hipotezę zerową i przyjmujemy hipotezę alternatywną, że branża jest dochodowa
+if(statystyka_T < left_edge_T){
+  print("Brak podstaw do odrzucenia hipotezy zerowej.")
+}else{
+  print("Odrzucamy hipotezę zerową, przyjmujemy hipotezę alternatywną - branża jest dochodowa.")
+}
