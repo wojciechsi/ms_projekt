@@ -2,7 +2,7 @@
 #######WCZYTANIE DANYCH#######
 ##############################
 
-data1 <- read.csv(file = '4-1.csv', sep = ';')
+data1 <- read.csv(file = 'MS_projekt.csv', sep = ';')
 koszty <- data1$koszty
 obroty <- data1$obroty
 ##############################
@@ -127,19 +127,65 @@ axis(1, at = seq(min(obroty), max(obroty), by=szerokosc_przedzialu_obroty) , lab
 #========= ZADANIE 2 =========
 ##############################
 
-#podajemy odpowiednie kolumny, rozkład hipotetyczny jest normalny, przekazywane estymatory są parametrami spodziewanego rozkładu
-ks.test(koszty,
-        "pnorm",
-        mean = mean(koszty),
-        sd = sd(koszty))
-#wartość p-value jest większa od poziomu istotności (alfa = 0.05), nie ma więc podstaw do odrzucenia hipotezy
+f_podcalk <- function(x){exp((-x^2)/2) / sqrt(2*pi)}
 
-ks.test(obroty,
-        "pnorm",
-        mean = mean(obroty),
-        sd = sd(obroty))
-#wartość p-value jest większa od poziomu istotności (alfa = 0.05), nie ma więc podstaw do odrzucenia hipotezy
+test_k <- function(tmp_data, tmp_data_mean, tmp_data_deviation) {
+  tmp_data_sorted <- sort(tmp_data)
+  i <- seq(1, length(tmp_data), by=1)
 
+  tmp_data_stan <- ((tmp_data_sorted-tmp_data_mean)/tmp_data_deviation)
+
+  distr_t <- c()
+  
+  for(j in 1:length(tmp_data_stan)) {
+    distr_t <- c(distr_t, integrate(f_podcalk, lower = -Inf, upper = tmp_data_stan[j])$value)
+  }
+  
+  distr_e <- i/length(tmp_data)
+  
+  #składowe
+  d_p <- abs(distr_e - distr_t)
+  k <- (i-1)/length(tmp_data)
+  d_m <- abs(k - distr_t)
+  
+  #statystyka Kołmogorowa
+  tmp_data_tab <- c(i, tmp_data_sorted, tmp_data_stan, distr_e, distr_t, d_p, k, d_m)
+  tab <- matrix(tmp_data_tab, nrow=length(tmp_data), dimnames = NULL, ncol = 8)
+  
+  colnames(tab) <- c('i','x','stand. x', 'i / n', 'F0(x)', '|i / n - F0(x)|','(i - 1)/n', '|(i - 1)/n - F0(x)|' )
+  rownames(tab) <- seq(1, length(koszty), by=1)
+  
+  
+  print(tab)
+  
+  d_p_max = max(d_p)
+  d_m_max = max(d_m)
+  
+  return(max(d_p_max, d_m_max))
+  
+}
+
+koszty_test_k <- test_k(koszty, srednia_koszty, odchylenie_koszty)
+
+wartosc_krytyczna <- 0.2641
+
+print('Wynik testu Kołmogorowa dla Kosztów:')
+if(koszty_test_k < wartosc_krytyczna){
+  print('Nie ma podstaw, do odrzucenia hipotezy, że rozkład jest normalny')
+} else {
+  print('Są podstawy, do odrzucenia hipotezy, że rozkład jest normalny')
+}
+
+obroty_test_k <- test_k(obroty, srednia_obroty, odchylenie_obroty)
+
+wartosc_krytyczna <- 0.2641
+
+print('Wynik testu Kołmogorowa dla obrotów:')
+if(obroty_test_k < wartosc_krytyczna) {
+  print('Nie ma podstaw, do odrzucenia hipotezy, że rozkład jest normalny')
+} else {
+  print('Są podstawy, do odrzucenia hipotezy, że rozkład jest normalny')
+}
 
 ##############################
 #========= ZADANIE 3 =========
